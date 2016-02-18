@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Description</key>
+    <string>Downloads latest Aspera Connect disk image.</string>
+    <key>Identifier</key>
+    <string>com.github.avenjamin.download.AsperaConnect</string>
+    <key>Input</key>
+    <dict>
+        <key>NAME</key>
+        <string>AsperaConnect</string>
+        <key>DOWNLOAD_PAGE_URL</key>
+        <string>http://downloads.asperasoft.com/en/downloads/8?list</string>
+    </dict>
+    <key>MinimumVersion</key>
+    <string>0.4.0</string>
+    <key>Process</key>
+    <array>
+        <dict>
+            <key>Processor</key>
+            <string>URLTextSearcher</string>
+            <key>Arguments</key>
+            <dict>
+                <key>url</key>
+                <string>%DOWNLOAD_PAGE_URL%</string>
+                <key>re_pattern</key>
+                <string>([0-9.]+/(?P&lt;dmgname&gt;.*?)\.dmg)</string>
+				<key>result_output_var_name</key>
+				<string>DOWNLOAD_URL</string>
+            </dict>
+        </dict>
+        <dict>
+            <key>Processor</key>
+            <string>URLDownloader</string>
+            <key>Arguments</key>
+            <dict>
+                <key>url</key>
+                <string>http://download.asperasoft.com/download/sw/connect/%DOWNLOAD_URL%</string>
+                <key>filename</key>
+                <string>%dmgname%.dmg</string>
+            </dict>
+        </dict>
+        <dict>
+            <key>Processor</key>
+            <string>EndOfCheckPhase</string>
+        </dict>
+    </array>
+</dict>
+</plist>
